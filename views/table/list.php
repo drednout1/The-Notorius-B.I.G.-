@@ -25,7 +25,6 @@ use yii\widgets\ActiveForm;
                 echo '<td>' . $list->fileName . '</td>';
                 echo '<td>' . $list->country . '</td>';
                 echo '<td><a href="/web/table/download?file=' . $list->fileName . '">Download</a></td>';
-                // echo '<td><a href="update?task=' . $user->id . '">Modify</a></td>';
                 echo '</tr>';
             };
         echo '</table>';

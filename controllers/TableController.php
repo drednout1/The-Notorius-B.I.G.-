@@ -67,7 +67,7 @@ class TableController extends Controller
             if ($model->pdfFile->baseName == $findTask->fileName)
              {
                 $update = files::findOne($findTask);
-                $update->inWork = '0';
+                $update->inWork = '3';
                 $update->user_id = $citizen;
                 $update->save();
             } else {
@@ -92,6 +92,41 @@ class TableController extends Controller
         $getFile = Yii::$app->request->get('file');
         return \Yii::$app->response->sendFile('uploads/' .  $getFile . '.jpg');
         return $this->redirect('\web\table\list');
+    }
+
+    public function actionDone()
+    {
+        $getFile = Yii::$app->request->get('file');
+        return \Yii::$app->response->sendFile('uploadsNot/' .  $getFile . '.jpg');
+        return $this->redirect('\web\table\tasks');
+    }
+
+    public function actionTasks()
+    {
+        $user_id = \yii::$app->session->get('user_id');
+        $id = \yii::$app->session->get('id');
+
+        $inWork = files::findAll([
+            'inWork' => '0',
+            'user_id' => $id
+        ]);
+        
+        $done = files::findOne([
+            'inWork' => '3',
+            'user_id' => $id
+        ]);
+
+        if ($done && $id == $done->user_id)
+        {
+            return $this->render('tasks', [
+                'tasks' => $inWork,
+                'done' => 'done'
+                ]);
+        };
+        return $this->render('tasks', [
+            'tasks' => $inWork,
+            ]);
+        
     }
 
 }

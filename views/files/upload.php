@@ -3,6 +3,20 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 
+?>
+    <style>
+        table {
+            width: 100%; 
+            border-spacing: 7px 11px; 
+        }
+        td {
+            padding: 5px; 
+            border: 1px solid #000000; 
+        }
+    </style>   
+        <div>
+<?php 
+
 $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
     <?= $form->field($model, 'country') ?>
     <?= $form->field($model, 'email') ?>
@@ -24,10 +38,13 @@ $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?
                 echo '<tr>';
                 echo '<td>' . $user->fileName . '</td>';
                 echo '<td>' . $user->country . '</td>';
-                echo '<td><a href="/web/files/files-upload?task=' . $user->fileName . '">X</a></td>';
+                echo '<td><a href="/web/files/files-upload?task=' . $user->fileName . '">Delete</a></td>';
                 // echo '<td><a href="update?task=' . $user->id . '">Modify</a></td>';
                 echo '</tr>';
             };
         echo '</table>';
 ?>
     </div>
+
+    <br>
+            <a href="/web/table/tasks">Your Tasks</a>
