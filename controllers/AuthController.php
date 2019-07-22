@@ -28,9 +28,9 @@ class AuthController extends Controller
             \yii::$app->session->set('id', $user->id);
             $user1 = \yii::$app->session->get('user_id');
 
-            if ($user->login == $model->login && $hashPass && $user1 == 0) {
+            if (isset($user->login) == $model->login && $hashPass && $user1 == 0) {
                 return $this->redirect('table\common');  
-            } elseif ($user->login == $model->login && $hashPass && $user1 == 1) {
+            } elseif (isset($user->login) == $model->login && $hashPass && $user1 == 1) {
                             return $this->redirect('files/files-upload');
                         };
 
@@ -61,8 +61,8 @@ class AuthController extends Controller
                 'hashPass' => $model->pass,
                 'pass' => $model->pass,]);
 
-                if ($alreadyRegister->email == $model->email &&
-                $alreadyRegister->login == $model->login) 
+                if (isset($alreadyRegister->email) == $model->email &&
+                isset($alreadyRegister->login) == $model->login) 
                 {
                     return $this->render('register' , 
                     [
