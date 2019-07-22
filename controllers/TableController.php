@@ -34,7 +34,7 @@ class TableController extends Controller
             $update->user_id = $id;
             $update->save();
 
-            return $this->redirect('\web\table\common');
+            return $this->redirect('common');
         }
         
         return $this->render('common', [
@@ -91,14 +91,14 @@ class TableController extends Controller
     {
         $getFile = Yii::$app->request->get('file');
         return \Yii::$app->response->sendFile('uploads/' .  $getFile . '.jpg');
-        return $this->redirect('\web\table\list');
+        return $this->redirect('list');
     }
 
     public function actionDone()
     {
         $getFile = Yii::$app->request->get('file');
         return \Yii::$app->response->sendFile('uploadsNot/' .  $getFile . '.jpg');
-        return $this->redirect('\web\table\tasks');
+        return $this->redirect('tasks');
     }
 
     public function actionTasks()

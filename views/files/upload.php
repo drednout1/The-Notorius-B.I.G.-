@@ -38,8 +38,7 @@ $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?
                 echo '<tr>';
                 echo '<td>' . $user->fileName . '</td>';
                 echo '<td>' . $user->country . '</td>';
-                echo '<td><a href="/web/files/files-upload?task=' . $user->fileName . '">Delete</a></td>';
-                // echo '<td><a href="update?task=' . $user->id . '">Modify</a></td>';
+                echo '<td><a href="files-upload?task=' . $user->fileName . '">Delete</a></td>';
                 echo '</tr>';
             };
         echo '</table>';
@@ -47,4 +46,4 @@ $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?
     </div>
 
     <br>
-            <a href="/web/table/tasks">Your Tasks</a>
+            <a href="<?=Url::to(['/table/tasks'])?>">Your Tasks</a>

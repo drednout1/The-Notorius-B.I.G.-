@@ -1,3 +1,9 @@
+<?php
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+
+?>
 <style>
     table {
         width: 100%; 
@@ -23,7 +29,7 @@
                     
                 if ($done) 
                 {
-                    echo '<td><a href="/web/table/done?file=' . $user->fileName . '">Download</a></td>';
+                    echo '<td><a href="done?file=' . $user->fileName . '">Download</a></td>';
                 } 
                 else {
                     echo '<td>In Work</td>';
@@ -35,5 +41,5 @@
 ?>
         </div>
             <br>
-            <a href="/web/files/files-upload">Your List</a>
+            <a href="<?=Url::to(['/files/files-upload'])?>">Your List</a>
 <?php 

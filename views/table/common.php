@@ -21,7 +21,7 @@
                     echo '<td>' . $user->fileName . '</td>';
                     echo '<td>' . $user->country . '</td>';
 
-                    echo '<td><a href="/web/table/common?file=' . $user->id . '">Take on work</a></td>';
+                    echo '<td><a href="common?file=' . $user->id . '">Take on work</a></td>';
                     echo '</tr>';
                 };
             echo '</table>';
@@ -30,5 +30,5 @@
 ?>
         </div>
             <br>
-                <a href="/web/table/list">Your List</a>
+                <a href="list">Your List</a>
 <?php 

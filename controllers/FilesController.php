@@ -38,7 +38,7 @@ class FilesController extends Controller
         ]);
 
         if (Yii::$app->request->isPost && $model->upload()) {
-            return $this->redirect('\web\files\files-upload');   
+            return $this->redirect('files-upload');   
         };
 
         if($get = Yii::$app->request->get('task')){
@@ -50,7 +50,7 @@ class FilesController extends Controller
 
             $task->delete();
             
-            return $this->redirect('\web\files\files-upload'); 
+            return $this->redirect('files-upload'); 
         };
 
         return $this->render('upload', [

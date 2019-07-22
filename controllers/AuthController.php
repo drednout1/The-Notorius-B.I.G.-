@@ -21,25 +21,26 @@ class AuthController extends Controller
                 'pass' => $model->pass,
             ]);
 
-            if($user->login != $model->login && $user->pass != $model->pass){
+            $hash = Yii::$app->getSecurity()->generatePasswordHash($model->pass);
+            $hashPass = Yii::$app->getSecurity()->validatePassword($model->pass, $hash);
+
+            \yii::$app->session->set('user_id', $user->user_id);
+            \yii::$app->session->set('id', $user->id);
+            $user1 = \yii::$app->session->get('user_id');
+
+            if ($user->login == $model->login && $hashPass && $user1 == 0) {
+                return $this->redirect('table\common');  
+            } elseif ($user->login == $model->login && $hashPass && $user1 == 1) {
+                            return $this->redirect('files/files-upload');
+                        };
+
+            if(isset($user->login) != $model->login ){
                 return $this->render('index' , [
                     'model' => $model,
                     'reg' => 'reg']);
             };
-
-            \yii::$app->session->set('user_id', $user->user_id);
-            \yii::$app->session->set('id', $user->id);
         };
 
-        $user1 = \yii::$app->session->get('user_id');
-                    
-        if ($post && $user1 == 0) {
-            return $this->redirect('\web\table\common');        
-            } 
-                elseif ($post && $user1 == 1) {
-                    return $this->redirect('\web\files\files-upload');
-                };
-        
         return $this->render('index' , [
             'model' => $model,
         ]);
@@ -51,35 +52,39 @@ class AuthController extends Controller
 
         $users = Users::find()->all();
 
-        if (\Yii::$app->request->post()){
-            $model->load(Yii::$app->request->post());
-            $model->validate();    
-        };
-        
-        if (Users::findOne([
-            'login' => $model->login,
-            'email' => $model->email,
-            'pass' => $model->pass,])) 
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) 
         {
-            return $this->render('register' , [
-                'model' => $model,
-                'log' => 'log'
-                ]);
-                
+            $hashPass = Yii::$app->getSecurity()->generatePasswordHash($model->pass);
+            $alreadyRegister = Users::findOne([
+                'login' => $model->login,
+                'email' => $model->email,
+                'hashPass' => $model->pass,
+                'pass' => $model->pass,]);
 
-        } else if($model->load(Yii::$app->request->post())){
-            $newUser = new Users();
-            $newUser->login = $model->login;
-            $newUser->pass = $model->pass;
-            $newUser->email = $model->email;
-            $newUser->user_id = $model->user_id;
-            $newUser->save();
-        
-            return $this->render('register' , [
+                if ($alreadyRegister->email == $model->email &&
+                $alreadyRegister->login == $model->login) 
+                {
+                    return $this->render('register' , 
+                    [
                         'model' => $model,
-                        'reg' => 'reg']);
-                    };
-            
+                        'log' => 'log'
+                    ]);
+                } else {
+                    $newUser = new Users();
+                        $newUser->login = $model->login;
+                        $newUser->pass = $model->pass;
+                        $newUser->hashPass = $hashPass;
+                        $newUser->email = $model->email;
+                        $newUser->user_id = $model->user_id;
+                        $newUser->save();
+                    
+                        return $this->render('register' , 
+                        [
+                            'model' => $model,
+                            'reg' => 'reg'
+                        ]);
+                };                     
+        }          
         return $this->render('register' , [
             'model' => $model,
             'users' => $users,

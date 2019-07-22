@@ -20,6 +20,7 @@ class RegForm extends Model
             [['login', 'pass', 'user_id', 'email'], 'required'],
             [['login', 'pass', 'email'], 'string',  'min' => 6 , 'max' => 20],
             ['login', 'unique', 'targetClass' => users::class],
+            ['email', 'unique', 'targetClass' => users::class],
         ];
     }
 

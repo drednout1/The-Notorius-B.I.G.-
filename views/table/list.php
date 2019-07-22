@@ -24,7 +24,7 @@ use yii\widgets\ActiveForm;
                 echo '<tr>';
                 echo '<td>' . $list->fileName . '</td>';
                 echo '<td>' . $list->country . '</td>';
-                echo '<td><a href="/web/table/download?file=' . $list->fileName . '">Download</a></td>';
+                echo '<td><a href="download?file=' . $list->fileName . '">Download</a></td>';
                 echo '</tr>';
             };
         echo '</table>';
@@ -33,7 +33,7 @@ use yii\widgets\ActiveForm;
 ?>
     </div>
         <br>
-            <a href="/web/table/common">Back</a>
+            <a href="common">Back</a>
 <?php 
 
 $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
