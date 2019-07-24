@@ -26,9 +26,11 @@ class TableController extends Controller
                 'inWork' => '0',
                 'id' =>  $getFile,
             ]);
-            if (isset($memorize)) {
-                \yii::$app->session->set('citizen', $memorize->user_id);
-            };
+
+        if (isset($memorize)) 
+        {
+            \yii::$app->session->set('citizen', $memorize->user_id);
+        };
 
             $update = files::findOne($getFile);
             $update->inWork = '1';
@@ -36,7 +38,7 @@ class TableController extends Controller
             $update->save();
 
             return $this->redirect('common');
-        }
+        };
         
         return $this->render('common', [
             'tasks' => $getOnWork
