@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 ?>
     <style>
         table {
@@ -12,34 +13,48 @@ use yii\widgets\ActiveForm;
             border: 1px solid #000000; 
         }
     </style>   
-        <div>
-<?php 
-        echo '<table>';
-        echo '<br>';
-            foreach ($tasks as $list)
-            { 
-                $counter = 0;
-                $counter1 = 0;
-                
-                echo '<tr>';
-                echo '<td>' . $list->fileName . '</td>';
-                echo '<td>' . $list->country . '</td>';
-                echo '<td><a href="download?file=' . $list->fileName . '">Download</a></td>';
-                echo '</tr>';
-            };
-        echo '</table>';
 
-        
+
+<div>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Name of file</th>
+      <th scope="col">Country</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+<?
+    foreach ($tasks as $list)
+            { 
 ?>
-    </div>
-        <br>
-            <a href="common">Back</a>
+    <tr>
+      <td><?=$list->fileName?></td>
+      <td><?=$list->country?></td>
+      <td><a href="download?file=<?=$list->fileName?>">Download</a></td>
+    </tr>
+        <?}?>
+  </tbody>
+</table>
+
+    <br><a class="btn btn-success" href="common">Back</a><br><br>
 <?php 
 
 $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
-    <?= $form->field($model, 'pdfFile')->fileInput() ?>
+    <?= $form->field($model, 'pdfFile')->fileInput() ?><br>
 
     <?= Html::submitButton('Download', ['class' => 'btn btn-primary']) ?>
 
-<?php ActiveForm::end() ?>
+<?php ActiveForm::end();
+
+    if($error){
+?><br>
+    <div class="alert alert-danger" role="alert">
+    Download the same name file
+</div><?
+    };
+
+
+

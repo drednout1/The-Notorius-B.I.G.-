@@ -1,34 +1,25 @@
-    <style>
-    table {
-        width: 100%; 
-        border-spacing: 7px 11px; 
-    }
-    td {
-        padding: 5px; 
-        border: 1px solid #000000; 
-    }
-    </style>
-        <div>
-<?php 
-            echo '<table>';
-            echo '<br>';
-                foreach ($tasks as $user)
-                { 
-                    $counter = 0;
-                    $counter1 = 0;
-                    
-                    echo '<tr>';
-                    echo '<td>' . $user->fileName . '</td>';
-                    echo '<td>' . $user->country . '</td>';
-
-                    echo '<td><a href="common?file=' . $user->id . '">Take on work</a></td>';
-                    echo '</tr>';
-                };
-            echo '</table>';
-
-        
+<div>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Name of file</th>
+      <th scope="col">Country</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+<?
+    foreach ($tasks as $user)
+            { 
 ?>
-        </div>
-            <br>
-                <a href="list">Your List</a>
+    <tr>
+      <td><?=$user->fileName?></td>
+      <td><?=$user->country?></td>
+      <td><a href="common?file=<?=$user->id?>">Take on work</a></td>
+    </tr>
+        <?}?>
+  </tbody>
+</table>
+
+        <br><a class="btn btn-success" href="list">Your List</a>
 <?php 

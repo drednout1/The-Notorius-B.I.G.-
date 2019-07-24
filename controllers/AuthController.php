@@ -29,9 +29,9 @@ class AuthController extends Controller
             $user1 = \yii::$app->session->get('user_id');
 
             if (isset($user->login) == $model->login && $hashPass && $user1 == 0) {
-                return $this->redirect('table\common');  
+                return $this->redirect('table/common');  
             } elseif (isset($user->login) == $model->login && $hashPass && $user1 == 1) {
-                            return $this->redirect('files/files-upload');
+                            return $this->redirect('files\files-upload');
                         };
 
             if(isset($user->login) != $model->login ){
@@ -49,8 +49,6 @@ class AuthController extends Controller
     public function actionRegister()
     {
         $model = new RegForm();
-
-        $users = Users::find()->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) 
         {
@@ -87,7 +85,6 @@ class AuthController extends Controller
         }          
         return $this->render('register' , [
             'model' => $model,
-            'users' => $users,
         ]);
     }
 }

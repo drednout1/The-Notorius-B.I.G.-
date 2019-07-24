@@ -16,7 +16,7 @@ class UploadForm extends Model
     public function rules()
     {
         return [
-            [['pdfFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            [['pdfFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf'],
             [['country', 'email'], 'required'],
             ['email', 'email']];
     }

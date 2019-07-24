@@ -20,16 +20,18 @@ $form = ActiveForm::begin() ?>
     </div>
 <?php ActiveForm::end();
 
-echo '<pre>';
-print_r($users);
-
 if($log){
-    echo 'You are already register, please '
-    ?><a href="<?=Url::to(['auth/index'])?>" name='log'>Login</a><br><?; 
+    ?><div class="alert alert-info" role="alert">
+    You are already register, please
+    <a class="btn btn-primary btn-sm" href="<?=Url::to(['auth/index'])?>">Login</a>
+  </div><?
 };
 
 if($reg){
-    echo 'You are register, please '
-    ?><a href="<?=Url::to(['auth/index'])?>" name='log'>Login</a><br><?; 
+    ?><div class="alert alert-success" role="alert">
+    You are register, please 
+    <a class="btn btn-primary btn-sm" href="<?=Url::to(['auth/index'])?>">Login</a>
+  </div><?
+     
 };
     

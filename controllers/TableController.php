@@ -26,8 +26,9 @@ class TableController extends Controller
                 'inWork' => '0',
                 'id' =>  $getFile,
             ]);
-
-            \yii::$app->session->set('citizen', $memorize->user_id);
+            if (isset($memorize)) {
+                \yii::$app->session->set('citizen', $memorize->user_id);
+            };
 
             $update = files::findOne($getFile);
             $update->inWork = '1';
@@ -50,6 +51,10 @@ class TableController extends Controller
         $citizen = \yii::$app->session->get('citizen');
 
         $model = new UploadNotarius();
+        $tasklist = files::findAll([
+            'inWork' => '1',
+            'user_id' => $id
+        ]);
         
         if(Yii::$app->request->isPost)
         {
@@ -71,16 +76,14 @@ class TableController extends Controller
                 $update->user_id = $citizen;
                 $update->save();
             } else {
-                echo 'Братан, загрузи тот же файл!';
-                exit();
-            };
-        };
+                return $this->render('list', [
+                    'tasks' => $tasklist,
+                    'model' => $model,
+                    'error' => 'error',
+                ]);
+            }
+        }        
 
-        $tasklist = files::findAll([
-            'inWork' => '1',
-            'user_id' => $id
-        ]);
-        
         return $this->render('list', [
             'tasks' => $tasklist,
             'model' => $model
@@ -90,14 +93,14 @@ class TableController extends Controller
     public function actionDownload()
     {
         $getFile = Yii::$app->request->get('file');
-        return \Yii::$app->response->sendFile('uploads/' .  $getFile . '.jpg');
+        return \Yii::$app->response->sendFile('uploads/' .  $getFile . '.pdf');
         return $this->redirect('list');
     }
 
     public function actionDone()
     {
         $getFile = Yii::$app->request->get('file');
-        return \Yii::$app->response->sendFile('uploadsNot/' .  $getFile . '.jpg');
+        return \Yii::$app->response->sendFile('uploadsNot/' .  $getFile . '.pdf');
         return $this->redirect('tasks');
     }
 

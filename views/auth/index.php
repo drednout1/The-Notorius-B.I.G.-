@@ -19,12 +19,11 @@ $form = ActiveForm::begin() ?>
     </div>
 <?php ActiveForm::end();
 
-echo '<pre>';
-print_r($users);
-
     if($reg){
-        echo 'Ooops, take another try, or '
-        ?><a href="<?=Url::to(['auth/register'])?>" name='reg'>Register</a><br><?; 
+        ?><div class="alert alert-danger" role="alert">
+    Ooops, take another try, or
+    <a class="alert-link" href="<?=Url::to(['auth/register'])?>">Register</a>
+  </div><?  
     };
 
     

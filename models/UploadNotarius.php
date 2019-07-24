@@ -14,7 +14,7 @@ class UploadNotarius extends Model
     public function rules()
     {
         return [
-            [['pdfFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg']];
+            [['pdfFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf']];
     }
     
     public function upload()
