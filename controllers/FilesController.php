@@ -48,8 +48,10 @@ class FilesController extends Controller
                 'user_id' => $id,
             ]);
 
-            $task->delete();
-            
+            if ($task) {
+                $task->delete();
+            };
+
             return $this->redirect('files-upload'); 
         };
 

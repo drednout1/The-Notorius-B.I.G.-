@@ -13,7 +13,7 @@ class AuthController extends Controller
     {
         $model = new LoginForm();
 
-        if ($post = $model->load(Yii::$app->request->post()) && $model->validate()) 
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) 
         {
             $user = Users::findOne([
                 'user_id' => $model->user_id,
@@ -24,14 +24,17 @@ class AuthController extends Controller
             $hash = Yii::$app->getSecurity()->generatePasswordHash($model->pass);
             $hashPass = Yii::$app->getSecurity()->validatePassword($model->pass, $hash);
 
-            \yii::$app->session->set('user_id', $user->user_id);
-            \yii::$app->session->set('id', $user->id);
-            $user1 = \yii::$app->session->get('user_id');
+            if (isset($user)) 
+            {
+                \yii::$app->session->set('user_id', $user->user_id);
+                \yii::$app->session->set('id', $user->id);
+                $SessRole = \yii::$app->session->get('user_id');
+            };
 
-            if (isset($user->login) == $model->login && $hashPass && $user1 == 0) {
+            if (isset($user->login) == $model->login && $hashPass && $SessRole == 0) {
                 return $this->redirect('table/common');  
-            } elseif (isset($user->login) == $model->login && $hashPass && $user1 == 1) {
-                            return $this->redirect('files\files-upload');
+            } elseif (isset($user->login) == $model->login && $hashPass && $SessRole == 1) {
+                            return $this->redirect('files/files-upload');
                         };
 
             if(isset($user->login) != $model->login ){
@@ -86,6 +89,17 @@ class AuthController extends Controller
         return $this->render('register' , [
             'model' => $model,
         ]);
+    }
+
+    public function actionLogout()
+    {
+        if ($session = Yii::$app->session) 
+        {
+            $session->remove('user_id');
+            $session->close();
+                $session->destroy();
+                return $this->redirect('/web');
+        };
     }
 }
 

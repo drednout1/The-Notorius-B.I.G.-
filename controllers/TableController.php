@@ -32,13 +32,15 @@ class TableController extends Controller
             \yii::$app->session->set('citizen', $memorize->user_id);
         };
 
+        if (files::findOne($getFile)) 
+        {
             $update = files::findOne($getFile);
             $update->inWork = '1';
             $update->user_id = $id;
             $update->save();
 
             return $this->redirect('common');
-        };
+        }};
         
         return $this->render('common', [
             'tasks' => $getOnWork
@@ -71,7 +73,7 @@ class TableController extends Controller
                 'fileName' => $model->pdfFile->baseName
             ]);
 
-            if ($model->pdfFile->baseName == $findTask->fileName)
+            if ($model->pdfFile->baseName == isset($findTask->fileName))
              {
                 $update = files::findOne($findTask);
                 $update->inWork = '3';
@@ -121,7 +123,7 @@ class TableController extends Controller
             'user_id' => $id
         ]);
 
-        if ($done && $id == $done->user_id)
+        if (isset($done) && $id == isset($done->user_id))
         {
             return $this->render('tasks', [
                 'tasks' => $inWork,
