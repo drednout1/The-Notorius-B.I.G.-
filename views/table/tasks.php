@@ -16,16 +16,17 @@ use yii\helpers\Url;
   </thead>
   <tbody>
 <?
-    foreach ($tasks as $user)
+    foreach ($tasks as $task)
             { 
 ?>
     <tr>
-      <td><?=$user->fileName?></td>
-      <td><?=$user->country?></td>
-<?if ($done) 
+      <td><?=$task->fileName?></td>
+      <td><?=$task->country?></td>
+<?
+if ($done) 
     {
-        echo '<td><a href="done?file=' . $user->fileName . '">Download</a></td>';
-    } 
+        echo '<td><a href="done?file=' . $task->fileName . '">Download</a></td>';
+    }
     else {
         echo '<td>In Work</td>';
     };

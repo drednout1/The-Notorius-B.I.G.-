@@ -4,7 +4,7 @@
     <tr>
       <th scope="col">Name of file</th>
       <th scope="col">Country</th>
-      <th scope="col">Delete</th>
+      <th scope="col">Take</th>
     </tr>
   </thead>
   <tbody>
@@ -15,7 +15,7 @@
     <tr>
       <td><?=$user->fileName?></td>
       <td><?=$user->country?></td>
-      <td><a href="common?file=<?=$user->id?>">Take on work</a></td>
+      <td><a href="common?file=<?=$user->idFile?>">Take on work</a></td>
     </tr>
         <?}?>
   </tbody>

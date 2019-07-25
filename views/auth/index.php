@@ -5,9 +5,9 @@ use yii\helpers\Url;
 
 $form = ActiveForm::begin() ?>
     <p>Authorization</p>
-    <?= $form->field($model, 'user_id')->dropDownList([
-        '0' => 'Notorius B.I.G.',
-        '1' => 'citizen'
+    <?= $form->field($model, 'role')->dropDownList([
+        '1' => 'Notorius',
+        '2' => 'citizen'
     ])?>
     <?= $form->field($model, 'login') ?>
     <?= $form->field($model, 'pass')->passwordInput() ?>

@@ -10,14 +10,14 @@ class RegForm extends Model
     public $login;
     public $pass;
     public $email;
-    public $user_id;
+    public $role;
     public $rememberMe = true;
 
     
     public function rules() 
     {
         return [
-            [['login', 'pass', 'user_id', 'email'], 'required'],
+            [['login', 'pass', 'role', 'email'], 'required'],
             [['login', 'pass', 'email'], 'string',  'min' => 6 , 'max' => 20],
             ['login', 'unique', 'targetClass' => users::class],
             ['email', 'unique', 'targetClass' => users::class],

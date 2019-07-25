@@ -3,17 +3,6 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 ?>
-    <style>
-        table {
-            width: 100%; 
-            border-spacing: 7px 11px; 
-        }
-        td {
-            padding: 5px; 
-            border: 1px solid #000000; 
-        }
-    </style>   
-
 
 <div>
 <table class="table table-bordered">
@@ -21,7 +10,7 @@ use yii\helpers\Url;
     <tr>
       <th scope="col">Name of file</th>
       <th scope="col">Country</th>
-      <th scope="col">Delete</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -32,7 +21,7 @@ use yii\helpers\Url;
     <tr>
       <td><?=$list->fileName?></td>
       <td><?=$list->country?></td>
-      <td><a href="download?file=<?=$list->fileName?>">Download</a></td>
+      <td><a class="btn btn-success" href="download?file=<?=$list->fileName?>">Download</a>
     </tr>
         <?}?>
   </tbody>

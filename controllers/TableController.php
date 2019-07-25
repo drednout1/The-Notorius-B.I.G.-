@@ -6,38 +6,38 @@ use yii\web\Controller;
 use app\models\Files;
 use app\models\UploadNotarius;
 use yii\web\UploadedFile;
-
+use app\models\orders;
 
 class TableController extends Controller
 {
     
     public function actionCommon()
     {
-        $user_id = \yii::$app->session->get('user_id');
+        $user_id = \yii::$app->session->get('role');
         $id = \yii::$app->session->get('id');
 
         $getOnWork = files::findAll([
-            'inWork' => '0',
+            'inWork' => '1',
         ]);  
         
         if ($getFile = Yii::$app->request->get('file')) 
         {
             $memorize = files::findOne([
-                'inWork' => '0',
+                'inWork' => '1',
                 'id' =>  $getFile,
             ]);
 
         if (isset($memorize)) 
         {
-            \yii::$app->session->set('citizen', $memorize->user_id);
+            \yii::$app->session->set('citizen', $memorize->id);
         };
 
         if (files::findOne($getFile)) 
         {
-            $update = files::findOne($getFile);
-            $update->inWork = '1';
-            $update->user_id = $id;
-            $update->save();
+            $takeOnWork = files::findOne($getFile);
+            $takeOnWork->inWork = '1';
+            $takeOnWork->id = $id;
+            $takeOnWork->save();
 
             return $this->redirect('common');
         }};
@@ -57,7 +57,7 @@ class TableController extends Controller
         $model = new UploadNotarius();
         $tasklist = files::findAll([
             'inWork' => '1',
-            'user_id' => $id
+            'id' => $id
         ]);
         
         if(Yii::$app->request->isPost)
@@ -67,17 +67,21 @@ class TableController extends Controller
             $model->pdfFile = UploadedFile::getInstance($model, 'pdfFile');
             $model->upload();
 
+            $order = Orders::findAll([
+                'id' => $citizen,
+            ]);
+            
             $findTask = files::findOne([
                 'inWork' => '1',
-                'user_id' => $id,
-                'fileName' => $model->pdfFile->baseName
+                'id' => $id,
+                'fileName' => $model->pdfFile->baseName,
             ]);
 
             if ($model->pdfFile->baseName == isset($findTask->fileName))
              {
                 $update = files::findOne($findTask);
-                $update->inWork = '3';
-                $update->user_id = $citizen;
+                $update->inWork = '2';
+                $update->id = $citizen;
                 $update->save();
             } else {
                 return $this->render('list', [
@@ -86,8 +90,8 @@ class TableController extends Controller
                     'error' => 'error',
                 ]);
             }
-        }        
-
+        }
+    
         return $this->render('list', [
             'tasks' => $tasklist,
             'model' => $model
@@ -110,28 +114,26 @@ class TableController extends Controller
 
     public function actionTasks()
     {
-        $user_id = \yii::$app->session->get('user_id');
         $id = \yii::$app->session->get('id');
 
-        $inWork = files::findAll([
-            'inWork' => '0',
-            'user_id' => $id
+        $allTasks = files::findAll([
+            'id' => $id
         ]);
         
-        $done = files::findOne([
-            'inWork' => '3',
-            'user_id' => $id
+        $done = files::findAll([
+            'inWork' => '2',
+            'id' => $id
         ]);
+        
+            if($done){
+                return $this->render('tasks', [
+                    'tasks' => $done,
+                    'done' => 'done'
+                    ]);
+            }
 
-        if (isset($done) && $id == isset($done->user_id))
-        {
-            return $this->render('tasks', [
-                'tasks' => $inWork,
-                'done' => 'done'
-                ]);
-        };
         return $this->render('tasks', [
-            'tasks' => $inWork,
+            'tasks' => $allTasks,
             ]);
         
     }

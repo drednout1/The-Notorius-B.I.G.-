@@ -16,7 +16,7 @@ class AuthController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) 
         {
             $user = Users::findOne([
-                'user_id' => $model->user_id,
+                'role' => $model->role,
                 'login' => $model->login,
                 'pass' => $model->pass,
             ]);
@@ -26,14 +26,14 @@ class AuthController extends Controller
 
             if (isset($user)) 
             {
-                \yii::$app->session->set('user_id', $user->user_id);
+                \yii::$app->session->set('role', $user->role);
                 \yii::$app->session->set('id', $user->id);
-                $SessRole = \yii::$app->session->get('user_id');
+                $SessRole = \yii::$app->session->get('role');
             };
 
-            if (isset($user->login) == $model->login && $hashPass && $SessRole == 0) {
+            if (isset($user->login) == $model->login && $hashPass && $SessRole == 1) {
                 return $this->redirect('table/common');  
-            } elseif (isset($user->login) == $model->login && $hashPass && $SessRole == 1) {
+            } elseif (isset($user->login) == $model->login && $hashPass && $SessRole == 2) {
                             return $this->redirect('files/files-upload');
                         };
 
@@ -76,7 +76,8 @@ class AuthController extends Controller
                         $newUser->pass = $model->pass;
                         $newUser->hashPass = $hashPass;
                         $newUser->email = $model->email;
-                        $newUser->user_id = $model->user_id;
+                        $newUser->role = $model->role;
+                        $newUser->userOrder = '0';
                         $newUser->save();
                     
                         return $this->render('register' , 

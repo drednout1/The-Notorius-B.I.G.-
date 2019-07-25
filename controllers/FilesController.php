@@ -6,35 +6,41 @@ use yii\web\Controller;
 use app\models\UploadForm;
 use app\models\Files;
 use yii\web\UploadedFile;
-
+use app\models\orders;
 
 class FilesController extends Controller
 {
     
     public function actionFilesUpload()
     {
-        $model = new UploadForm();
-
         $id = \yii::$app->session->get('id');
-        $user_id = \yii::$app->session->get('user_id');
+        $sessRole = \yii::$app->session->get('role');
+
+        $model = new UploadForm();
 
         if (Yii::$app->request->isPost && $id) {
             $model->load(Yii::$app->request->post());
             $model->validate();
         
             $model->pdfFile = UploadedFile::getInstance($model, 'pdfFile');
+
+            $order = new orders();
+
+            $order->id = $id;
+            $order->save();
         
             $newFile = new Files();
             $newFile->fileName = $model->pdfFile->baseName;
             $newFile->country = $model->country;
             $newFile->email = $model->email;
-            $newFile->user_id = $id;
+            $newFile->id = $id;
             $newFile->inWork = '0';
+            $newFile->userOrder = $order->userOrder;
             $newFile->save();
         };
 
         $tasks = files::findAll([
-            'user_id' => $id,
+            'id' => $id,
         ]);
 
         if (Yii::$app->request->isPost && $model->upload()) {
@@ -45,7 +51,7 @@ class FilesController extends Controller
 
             $task = files::findOne([
                 'fileName' => $get,
-                'user_id' => $id,
+                'id' => $id,
             ]);
 
             if ($task) {
